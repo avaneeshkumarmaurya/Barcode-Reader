@@ -128,6 +128,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
