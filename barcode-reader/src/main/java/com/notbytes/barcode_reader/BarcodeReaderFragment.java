@@ -15,7 +15,6 @@ import android.content.res.TypedArray;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -47,9 +46,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class BarcodeReaderFragment extends Fragment implements View.OnTouchListener, BarcodeGraphicTracker.BarcodeGraphicTrackerListener {
-    private static final String TAG = BarcodeReaderFragment.class.getSimpleName();
-    private static final String KEY_AUTO_FOCUS = "key_auto_focus";
-    private static final String KEY_USE_FLASH = "key_use_flash";
+    protected static final String TAG = BarcodeReaderFragment.class.getSimpleName();
+    protected static final String KEY_AUTO_FOCUS = "key_auto_focus";
+    protected static final String KEY_USE_FLASH = "key_use_flash";
+    private static final String KEY_SCAN_OVERLAY_VISIBILITY = "key_scan_overlay_visibility";
     // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
 
@@ -72,17 +72,28 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
     private static final int PERMISSION_CALLBACK_CONSTANT = 101;
     private static final int REQUEST_PERMISSION_SETTING = 102;
     private boolean sentToSettings = false;
-    private BarcodeCaptureListener mBarcodeCaptureListener;
+    private ScannerOverlay mScanOverlay;
+    private int scanOverlayVisibility;
 
     public BarcodeReaderFragment() {
         // Required empty public constructor
     }
 
     public static BarcodeReaderFragment newInstance(boolean autoFocus, boolean useFlash) {
+        Bundle args = new Bundle();
+        args.putBoolean(KEY_AUTO_FOCUS, autoFocus);
+        args.putBoolean(KEY_USE_FLASH, useFlash);
+        BarcodeReaderFragment fragment = new BarcodeReaderFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static BarcodeReaderFragment newInstance(boolean autoFocus, boolean useFlash, int scanOverlayVisibleStatus) {
 
         Bundle args = new Bundle();
         args.putBoolean(KEY_AUTO_FOCUS, autoFocus);
         args.putBoolean(KEY_USE_FLASH, useFlash);
+        args.putInt(KEY_SCAN_OVERLAY_VISIBILITY, scanOverlayVisibleStatus);
         BarcodeReaderFragment fragment = new BarcodeReaderFragment();
         fragment.setArguments(args);
         return fragment;
@@ -95,15 +106,6 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
      */
     public void setListener(BarcodeReaderListener barcodeReaderListener) {
         mListener = barcodeReaderListener;
-    }
-
-    /**
-     * Use this listener if you want only scanned single barcode
-     *
-     * @param captureListener
-     */
-    public void setBarcodeCaptureListener(BarcodeCaptureListener captureListener) {
-        mBarcodeCaptureListener = captureListener;
     }
 
     public void setBeepSoundFile(String fileName) {
@@ -125,6 +127,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         if (arguments != null) {
             this.autoFocus = arguments.getBoolean(KEY_AUTO_FOCUS, false);
             this.useFlash = arguments.getBoolean(KEY_USE_FLASH, false);
+            this.scanOverlayVisibility = arguments.getInt(KEY_SCAN_OVERLAY_VISIBILITY, View.VISIBLE);
         }
     }
 
@@ -137,11 +140,14 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         permissionStatus = getActivity().getSharedPreferences("permissionStatus", getActivity().MODE_PRIVATE);
         mPreview = view.findViewById(R.id.preview);
         mGraphicOverlay = view.findViewById(R.id.graphicOverlay);
+        mScanOverlay = view.findViewById(R.id.scan_overlay);
+        mScanOverlay.setVisibility(scanOverlayVisibility);
         gestureDetector = new GestureDetector(getActivity(), new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(getActivity(), new ScaleListener());
         view.setOnTouchListener(this);
         return view;
     }
+
 
     @Override
     public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
@@ -216,7 +222,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
 
             SharedPreferences.Editor editor = permissionStatus.edit();
             editor.putBoolean(Manifest.permission.CAMERA, true);
-            editor.commit();
+            editor.apply();
         } else {
             //You already have the permission, just go ahead.
             proceedAfterPermission();
@@ -280,13 +286,11 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         CameraSource.Builder builder = new CameraSource.Builder(getActivity(), barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(15.0f);
+                .setRequestedFps(1.0f);
 
         // make sure that auto focus is an available option
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            builder = builder.setFocusMode(
-                    autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-        }
+        builder = builder.setFocusMode(
+                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
 
         mCameraSource = builder
                 .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
@@ -468,33 +472,65 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
     }
 
     @Override
-    public void onScanned(Barcode barcode) {
+    public void onScanned(final Barcode barcode) {
         if (mListener != null && !isPaused) {
-            mListener.onScanned(barcode);
-        }
-        if (mBarcodeCaptureListener != null && !isPaused) {
-            mBarcodeCaptureListener.onBarcodeCaptured(barcode);
+            if (getActivity() == null) {
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onScanned(barcode);
+                }
+            });
         }
     }
 
     @Override
-    public void onScannedMultiple(List<Barcode> barcodes) {
+    public void onScannedMultiple(final List<Barcode> barcodes) {
         if (mListener != null && !isPaused) {
-            mListener.onScannedMultiple(barcodes);
+            if (getActivity() == null) {
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onScannedMultiple(barcodes);
+                }
+            });
+
         }
     }
 
     @Override
-    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
+    public void onBitmapScanned(final SparseArray<Barcode> sparseArray) {
         if (mListener != null) {
-            mListener.onBitmapScanned(sparseArray);
+            if (getActivity() == null) {
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onBitmapScanned(sparseArray);
+                }
+            });
+
         }
     }
 
     @Override
-    public void onScanError(String errorMessage) {
+    public void onScanError(final String errorMessage) {
         if (mListener != null) {
-            mListener.onScanError(errorMessage);
+            if (getActivity() == null) {
+                return;
+            }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onScanError(errorMessage);
+                }
+            });
+
         }
     }
 
@@ -592,7 +628,4 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         void onCameraPermissionDenied();
     }
 
-    public interface BarcodeCaptureListener {
-        void onBarcodeCaptured(Barcode barcode);
-    }
 }
