@@ -7,7 +7,7 @@ How to Use
 1. Include the barcode reader dependency in app's **build.gradle**
 ```gradle
 dependencies {
-    // google mobile vision
+    // google vision gradle
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
 }
 ```
@@ -71,7 +71,7 @@ be set manually.
 
 Check the example fragment code in <code>BarcodeFragment.java</code> and <code>BarcodeFragmentTestActivity.java</code>
 
-https://github.com/ravi8x/Barcode-Reader/tree/master/example/src/main/java/info/androidhive/barcodereader
+https://github.com/avaneeshkumarmaurya/Barcode-Reader/blob/master/barcode-reader/src/main/java/com/notbytes/barcode_reader/BarcodeReaderFragment.java
 
 Adding Scanner Overlay Scanning Indicator
 ----
@@ -84,21 +84,22 @@ To use it, add the <code>info.androidhive.barcode.ScannerOverlay</code> on top o
 
     <fragment
         android:id="@+id/barcode_fragment"
-        android:name="info.androidhive.barcode.BarcodeReader"
+        android:name="com.notbytes.barcode_reader.BarcodeReaderFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         app:auto_focus="true"
-        app:use_flash="false" />
+        app:use_flash="false"
+        android:layout_height="match_parent" />
 
-    <info.androidhive.barcode.ScannerOverlay
+    <com.notbytes.barcode_reader.ScannerOverlay
+        android:id="@+id/scan_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#44000000"
         app:line_color="#7323DC"
         app:line_speed="6"
-        app:line_width="4"
-        app:square_height="200"
-        app:square_width="200"/>
+        app:line_width="5"
+        app:square_height="250"
+        app:square_width="250" />
 
 </RelativeLayout>
 
