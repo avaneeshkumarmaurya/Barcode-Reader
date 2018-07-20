@@ -77,7 +77,7 @@ be set manually.
 
 Check the example fragment code in <code>BarcodeFragment.java</code> and <code>BarcodeFragmentTestActivity.java</code>
 
-https://github.com/avaneeshkumarmaurya/Barcode-Reader/blob/master/barcode-reader/src/main/java/com/notbytes/barcode_reader/BarcodeReaderFragment.java
+https://github.com/avaneeshkumarmaurya/Barcode-Reader/blob/master/app/src/main/java/com/notbytes/barcodereader/BarcodeFragment.java
 
 Adding Scanner Overlay Scanning Indicator
 ----
