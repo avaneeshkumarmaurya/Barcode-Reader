@@ -168,8 +168,3 @@ The scanning can be resumed by calling <code>resumeScanning()</code> method.
 ```java
 barcodeReader.resumeScanning();
 ```
-
-## Know Issues
-
-- Camera stream is not smooth. It's because of camera resolution.
-- Sometimes screen turns black after Camera permission is granted.
