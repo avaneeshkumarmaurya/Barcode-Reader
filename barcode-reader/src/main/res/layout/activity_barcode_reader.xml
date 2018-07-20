@@ -2,11 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/fm_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:layout_height="match_parent" />
+
+    <fragment
+        android:id="@+id/barcode_fragment"
+        android:name="com.notbytes.barcode_reader.BarcodeReaderFragment"
+        android:layout_width="match_parent"
+        app:auto_focus="true"
+        app:use_flash="false"
+        android:layout_height="match_parent" />
 </LinearLayout>
