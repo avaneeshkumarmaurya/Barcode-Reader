@@ -1,6 +1,6 @@
-Barcode Reader - Google Mobile Vision
+Barcode Reader Using Google Vision Api
 ===================
-Android Barcode Reader library using **Google Mobile Vision.** This library is built on top of google mobile vision sample adding improvements and fixing few bugs.
+Android Barcode Reader library using **Google Mobile Vision.**
 
 [ ![Download](https://api.bintray.com/packages/androidhive-info/maven/barcode-reader/images/download.svg) ](https://bintray.com/androidhive-info/maven/barcode-reader/_latestVersion)
 [![Example](https://img.shields.io/badge/Example-Movie%20Tickets-green.svg)](https://www.androidhive.info/2017/07/android-implementing-preferences-settings-screen/)
