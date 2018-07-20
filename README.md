@@ -12,6 +12,11 @@ dependencies {
 }
 ```
 2. Implement your activity from <code>BarcodeReader.BarcodeReaderListener</code> and override the necessary methods.
+or You can just launch this activity by calling 
+'''java
+Intent launchIntent = BarcodeReaderActivity.getLaunchIntent(this, true, false);
+        startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
+'''
 ```java
 public class BarcodeReaderActivity extends AppCompatActivity implements BarcodeReaderFragment.BarcodeReaderListener {
     public static String KEY_CAPTURED_BARCODE = "key_captured_barcode";
