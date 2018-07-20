@@ -11,19 +11,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
 }
 ```
-
-2. Add the barcode reader fragment to your activity
-```xml
-<fragment
-        android:id="@+id/barcode_fragment"
-        android:name="info.androidhive.barcode.BarcodeReader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:auto_focus="true"
-        app:use_flash="false" />
-```
-
-3. Implement your activity from <code>BarcodeReader.BarcodeReaderListener</code> and override the necessary methods.
+2. Implement your activity from <code>BarcodeReader.BarcodeReaderListener</code> and override the necessary methods.
 ```java
 public class BarcodeReaderActivity extends AppCompatActivity implements BarcodeReaderFragment.BarcodeReaderListener {
     public static String KEY_CAPTURED_BARCODE = "key_captured_barcode";
