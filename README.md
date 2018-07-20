@@ -92,12 +92,11 @@ To use it, add the <code>com.notbytes.barcode_reader.ScannerOverlay</code> on to
         android:id="@+id/barcode_fragment"
         android:name="com.notbytes.barcode_reader.BarcodeReaderFragment"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:auto_focus="true"
-        app:use_flash="false"
-        android:layout_height="match_parent" />
+        app:use_flash="false" />
 
     <com.notbytes.barcode_reader.ScannerOverlay
-        android:id="@+id/scan_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#44000000"
