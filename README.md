@@ -16,7 +16,7 @@ dependencies {
 ```java
 Intent launchIntent = BarcodeReaderActivity.getLaunchIntent(this, true, false);
         startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
-'''
+```
 
 3. If you want to make your own activity then implement your activity from <code>BarcodeReader.BarcodeReaderListener</code> and override the necessary methods.
 
