@@ -102,7 +102,7 @@ Adding Scanner Overlay Scanning Indicator
 ----
 The overlay animation indicator displays a horizontal line animating from top to bottom. This will be useful to  to show some cool animation to indicate scanning progress.
 
-To use it, add the <code>info.androidhive.barcode.ScannerOverlay</code> on top of barcode reader fragment using Relative or Frame layout.
+To use it, add the <code>com.notbytes.barcode_reader.ScannerOverlay</code> on top of barcode reader fragment using Relative or Frame layout.
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout ...>
