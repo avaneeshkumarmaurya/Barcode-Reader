@@ -78,7 +78,7 @@ Adding Barcode Reader in Fragment
 In fragment the barcode reader can be added easily but the scanner listener <code>barcodeReader.setListener()</code> has to 
 be set manually.
 
-Check the example fragment code in <code>BarcodeFragment.java</code> and <code>BarcodeFragmentTestActivity.java</code>
+Check the example fragment code in <code>BarcodeFragment.java</code> and <code>MainActivity.java</code>
 
 https://github.com/avaneeshkumarmaurya/Barcode-Reader/blob/master/app/src/main/java/com/notbytes/barcodereader/BarcodeFragment.java
 
