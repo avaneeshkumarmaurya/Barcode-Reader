@@ -2,7 +2,8 @@ Barcode Reader Using Google Vision Api
 ===================
 Android Barcode Reader library using **Google Mobile Vision.**
 
-![ezgif com-optimize 1](https://user-images.githubusercontent.com/13118997/43006126-8820aeda-8c52-11e8-952c-fb8d76c3cd47.gif)
+![ezgif com-optimize](https://user-images.githubusercontent.com/13118997/43034826-70d9e6e2-8d01-11e8-99eb-9e175ecc8c59.gif)
+
 
 How to Use
 -------------
