@@ -19,15 +19,16 @@ public class BarcodeFragment extends Fragment implements BarcodeReaderFragment.B
 
     private BarcodeReaderFragment barcodeReader;
 
-    public BarcodeFragment() {
-        // Required empty public constructor
+    public static BarcodeFragment newInstance() {
+        Bundle args = new Bundle();
+        BarcodeFragment fragment = new BarcodeFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -38,7 +39,6 @@ public class BarcodeFragment extends Fragment implements BarcodeReaderFragment.B
 
         barcodeReader = (BarcodeReaderFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
-
         return view;
     }
 
