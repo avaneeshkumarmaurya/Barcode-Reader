@@ -88,6 +88,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         return fragment;
     }
 
+
     public static BarcodeReaderFragment newInstance(boolean autoFocus, boolean useFlash, int scanOverlayVisibleStatus) {
 
         Bundle args = new Bundle();
@@ -295,9 +296,31 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
         mCameraSource = builder
                 .setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null)
                 .build();
-
     }
 
+    /**
+     * Trigger flash torch on and off, perhaps using a compound button.
+     */
+    public void setUseFlash(boolean use){
+        useFlash = use;
+        mCameraSource.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF);
+    }
+    /**
+     * Trigger auto focus mode, perhaps using a compound button.
+     */
+    public void setAutoFocus(boolean continuous){
+        autoFocus = continuous;
+        mCameraSource.setFocusMode(autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : Camera.Parameters.FOCUS_MODE_AUTO);
+    }
+    /**
+     * Returns true if device supports flash.
+     */
+    public boolean deviceSupportsFlash(){
+        if (getActivity().getPackageManager()==null)
+            return false;
+        return  getActivity().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA_FLASH);
+    }
     /**
      * Restarts the camera.
      */
