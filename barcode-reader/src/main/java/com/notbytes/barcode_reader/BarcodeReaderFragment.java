@@ -478,6 +478,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
 
             // TODO - pass the scanned value
             getActivity().setResult(CommonStatusCodes.SUCCESS, data);
+            getActivity().finish();
             return true;
         }
         return false;
