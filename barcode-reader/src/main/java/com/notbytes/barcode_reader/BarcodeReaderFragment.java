@@ -286,8 +286,7 @@ public class BarcodeReaderFragment extends Fragment implements View.OnTouchListe
 
         CameraSource.Builder builder = new CameraSource.Builder(getActivity(), barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(1.0f);
+                .setRequestedPreviewSize(1600, 1024);
 
         // make sure that auto focus is an available option
         builder = builder.setFocusMode(
